@@ -23,6 +23,10 @@ all: $(EXECUTABLE)
 run: $(EXECUTABLE)
 	$(EXECUTABLE) $(ARGS)
 
+run-vg: $(EXECUTABLE)
+	valgrind $(EXECUTABLE) $(ARGS)
+
+
 test: $(EXECUTABLE)
 	valgrind $(EXECUTABLE) test
 
