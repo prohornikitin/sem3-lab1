@@ -68,28 +68,17 @@ vector<string> Args::ParseStrings(string longName, char shortName)
 	return values;
 }
 
-optional<long long> Args::ParseLL(string longName, char shortName)
-{
-	auto f = [](string s){return stoll(s);};
-	return ParseCustom<long long>(f, longName, shortName);
-}
 
-vector<long long> Args::ParseLLs(string longName, char shortName)
-{
-	auto f = [](string s){return stoll(s);};
-	return ParseCustoms<long long>(f, longName, shortName);
-}
-
-optional<unsigned long long> Args::ParseULL(string longName, char shortName)
+optional<int> Args::ParseInt(string longName, char shortName)
 {
 	auto f = [](string s){return stoull(s);};
 	return ParseCustom<unsigned long long>(f, longName, shortName);
 }
 
-vector<unsigned long long> Args::ParseULLs(string longName, char shortName)
+vector<int> Args::ParseInts(string longName, char shortName)
 {
 	auto f = [](string s){return stoull(s);};
-	return ParseCustoms<unsigned long long>(f, longName, shortName);
+	return ParseCustoms<int>(f, longName, shortName);
 }
 
 size_t Args::getValuesStart(string longName, char shortName)

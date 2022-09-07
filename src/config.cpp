@@ -44,11 +44,7 @@ void Config::Parse(Args raw) {
 	sort = sortOpt.value();
 	
 	if(sort == Sort::Shell) {
-		auto gapsULL = raw.ParseULLs("gaps", 'g');
-		gaps.reserve(gapsULL.size());
-		for(auto i : gapsULL) {
-			gaps.push_back(i);
-		}
+		gaps = raw.ParseCustomsWithStream<size_t>("gaps", 'g');
 		std::sort(gaps.begin(), gaps.end(), greater<unsigned long long>());
 		if (gaps.size() == 0) {
 			gaps = {701, 301, 132, 57, 23, 10, 4, 1};

@@ -5,6 +5,7 @@
 #include <cstring>
 #include <vector>
 #include <functional>
+#include <sstream>
 
 
 class Args {
@@ -15,10 +16,6 @@ public:
 	bool ParseBool(std::string longName, char shortName = '\0');
 	std::optional<std::string> ParseString(std::string longName, char shortName = '\0');
 	std::vector<std::string> ParseStrings(std::string longName, char shortName = '\0');
-	std::optional<long long> ParseLL(std::string longName, char shortName = '\0');
-	std::vector<long long> ParseLLs(std::string longName, char shortName = '\0');
-	std::optional<unsigned long long> ParseULL(std::string longName, char shortName = '\0');
-	std::vector<unsigned long long> ParseULLs(std::string longName, char shortName = '\0');
 	
 	/**
 	 * strToT() should throw std::invalid_argument on failure
@@ -45,6 +42,38 @@ public:
 		}
 		return values;
 	}
+	
+	template <class T>
+	std::optional<T> ParseCustomWithStream(std::string longName, char shortName)
+	{
+		auto f = [](std::string s)
+		{
+			std::stringstream ss;
+			ss << s;
+			T val;
+			ss >> val;
+			return val;
+		};
+		return ParseCustom<T>(f, longName, shortName);
+	}
+	
+	template <class T>
+	std::vector<T> ParseCustomsWithStream(std::string longName, char shortName)
+	{
+		
+		auto f = [](std::string s)
+		{
+			std::stringstream ss;
+			ss << s;
+			T val;
+			ss >> val;
+			return val;
+		};
+		return ParseCustoms<T>(f, longName, shortName);
+	}
+
+	std::optional<int> ParseInt(std::string longName, char shortName);
+	std::vector<int> ParseInts(std::string longName, char shortName);
 
 private:
 	std::vector<std::string> args;
