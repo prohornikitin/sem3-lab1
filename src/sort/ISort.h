@@ -14,4 +14,4 @@ private:
 };
 
 template<class T>
-ISort<T>::Comparator ISort<T>::cmpDefault = [](const T& a, const T& b){return a < b;};
+typename ISort<T>::Comparator ISort<T>::cmpDefault = [](const T& a, const T& b){return a < b;};

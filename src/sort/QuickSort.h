@@ -6,7 +6,7 @@
 template <class T>
 class QuickSort : public ISort<T> {
 public:
-	using Comparator = ISort<T>::Comparator;
+	using Comparator = typename ISort<T>::Comparator;
 	
 	virtual Sequence<T>* sort(
 		const Sequence<T>* seq,

@@ -5,7 +5,7 @@
 template <class T>
 class HeapSort : public ISort<T> {
 public:
-	using Comparator = ISort<T>::Comparator;
+	using Comparator = typename ISort<T>::Comparator;
 	
 	virtual Sequence<T>* sort(
 		const Sequence<T>* seq, 

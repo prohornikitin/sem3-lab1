@@ -5,7 +5,7 @@
 template <class T>
 class ShellSort : public ISort<T> {
 public:
-	using Comparator = ISort<T>::Comparator;
+	using Comparator = typename ISort<T>::Comparator;
 	
 	ShellSort(const std::vector<size_t> & gaps)
 	{
@@ -20,7 +20,7 @@ public:
 		Sequence<T>* a = seq->copy();
 		for(size_t gap : gaps)
 		{
-			for (size_t i = gap; i < a->GetLength(); i += 1)
+			for (size_t i = gap; i < a->GetLength(); i++)
 			{
 				T temp = (*a)[i];
 				size_t j = i;
