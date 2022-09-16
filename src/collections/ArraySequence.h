@@ -60,12 +60,18 @@ public:
 
 	virtual void InsertAt(T item, size_t index) override
 	{
-		array->Resize(array->GetSize()+1);
-		for(size_t i = index; i < array->GetSize()-1; ++i)
-		{
-			(*array)[i+1] = (*array)[i];
+		if(index <= array->GetSize()) {
+			array->Resize(array->GetSize()+1);
+			for(size_t i = index; i < array->GetSize()-1; ++i)
+			{
+				(*array)[i+1] = (*array)[i];
+			}
+			(*array)[index] = item;
+		} else {
+			array->Resize(index+1);
+			(*array)[index] = item;
 		}
-		(*array)[index] = item;
+		
 	}
 
 	virtual void RemoveAt(size_t index) override {

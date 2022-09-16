@@ -81,6 +81,13 @@ public:
 
 	void InsertAt(T item, size_t index)
 	{
+		while (index > length)
+		{
+			Node* node = new Node(item, tail, nullptr);
+			tail->next = node;
+			tail = node;
+		}
+		
 		Node* prev = nullptr;
 		Node* next = nullptr;
 		if(index == 0)
