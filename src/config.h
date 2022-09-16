@@ -9,6 +9,7 @@
 #include "sort/QuickSort.h"
 #include "sort/HeapSort.h"
 #include "sort/ShellSort.h"
+#include <memory>
 
 
 class Config {
@@ -25,27 +26,31 @@ public:
 	
 	
 	template <class T>
-	ISort<T>* GetSort() {
+	std::unique_ptr<ISort<T>> GetSort() {
 		switch(sort) {
 		case Sort::Heap:
-			return new HeapSort<T>();
+			return std::make_unique<HeapSort<T>>();
 		case Sort::Quick:
-			return new QuickSort<T>();
+			return std::make_unique<QuickSort<T>>();
 		case Sort::Shell:
-			return new ShellSort<T>(gaps);
+			return std::make_unique<ShellSort<T>>(gaps);
 		default:
 			return nullptr; //unreachable
 		};
 	}
 	
+	size_t begin;
+	size_t end;
+	size_t step;
+	
+	std::string outputFile;
+	bool needGraph = false;
+	
 private:
 	Sort sort;
 	
-	
-	
 	std::vector<size_t> gaps;
-	std::string outputFile;
-	bool needGraph = false;
+	
 	
 	
 	void Parse(Args raw);

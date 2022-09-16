@@ -32,6 +32,7 @@ void Config::Parse(Args raw) {
 	if(outputFileOpt.has_value()) {
 		outputFile = outputFileOpt.value();
 	} else {
+		outputFile = "/tmp/sem3-lab1-tmp";
 		needGraph = true;
 	}
 	
@@ -53,4 +54,17 @@ void Config::Parse(Args raw) {
 			gaps.push_back(1);
 		}
 	}
+	
+	auto range = raw.ParseCustomsWithStream<size_t>("range", 'r');
+	if(range.size() == 0) {
+		std::cerr << "Error. No size range specified.\n";
+		exit(1);
+	}
+	if(range.size() != 3) {
+		std::cerr << "Error. Range should have format 'begin, end, step'\n";
+		exit(1);
+	}
+	begin = range[0];
+	end = range[1];
+	step = range[2];
 }
