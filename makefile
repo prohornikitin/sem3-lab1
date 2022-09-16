@@ -1,5 +1,5 @@
 CPP.COMPILER ?= g++
-BUILD = debug
+BUILD ?= debug
 
 DIR := $(dir $(abspath $(lastword $(MAKEFILE_LIST))))
 SRC_DIR := $(DIR)/src
