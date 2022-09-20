@@ -1,1 +1,0 @@
-gnuplot -p -e "set xlabel 'elements'; set ylabel 'time';plot '/tmp/lab1-OKiuMJ'"

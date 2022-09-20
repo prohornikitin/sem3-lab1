@@ -3,16 +3,20 @@
 #include <cstddef>
 
 template <class T>
-class HeapSort : public ISort<T> {
+class HeapSort : public ISort<T>
+{
 public:
 	using Comparator = typename ISort<T>::Comparator;
 	
-	virtual Sequence<T>* sort(
+	virtual Sequence<T>* Sort(
 		const Sequence<T>* seq, 
 		Comparator cmp = ISort<T>::cmpDefault
 	) override
 	{
 		auto* b = seq->copy();
+		if(b->GetLength() == 0) {
+			return b;
+		}
 		Heapify(b, cmp);
 		size_t end = b->GetLength() - 1;
 		while (end > 0)
@@ -22,6 +26,10 @@ public:
 			SiftDown(b, 0, end, cmp);
 		}
 		return b;
+	}
+	
+	virtual std::string Name() override {
+		return "HeapSort";
 	}
 
 private:
@@ -37,6 +45,10 @@ private:
 	
 	inline size_t ParentI(size_t i)
 	{
+		if(i == 0) 
+		{
+			return 0;
+		}
 		return (i-1) / 2;
 	}
 	
@@ -53,7 +65,7 @@ private:
 			{
 				swap = child;
 			}
-			if (child+1 <= end and cmp((*a)[swap], (*a)[child+1]))
+			if (child+1 <= end && cmp((*a)[swap], (*a)[child+1]))
 			{
 				swap = child + 1;
 			}
@@ -71,8 +83,8 @@ private:
 	
 	void Heapify(Sequence<T>* seq, Comparator cmp)
 	{
-		size_t start = ParentI(seq->GetLength()-1);
-		while (true) 
+		size_t start = ParentI(seq->GetLength() - 1);
+		while (true)
 		{
 			SiftDown(seq, start, seq->GetLength() - 1, cmp);
 			if(start == 0)

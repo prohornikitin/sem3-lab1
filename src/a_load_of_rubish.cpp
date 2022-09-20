@@ -1,22 +1,85 @@
 #include "a_load_of_rubish.h"
 #include <cstdlib>
 #include <ctime>
+#include <fstream>
+#include <string>
+#include <sstream>
 
-static bool srand_init = false;
+using namespace std;
 
-void RandomFill(Sequence<int>* s, size_t size) {
-	if(!srand_init) {
-		std::srand(std::time(nullptr));
-		srand_init = true;
+int normal_main(Config & config) {
+	if(config.check) {
+		check(config);
+		return 0;
 	}
 	
-	s->InsertAt(rand(), size-1);
-	for(size_t i = 0; i < (size-1); ++i) {
-		(*s)[i] = rand();
+	auto sortAlgorithms = config.GetSorts<int>();
+	auto seq = config.CreateSequence<int>();
+	ofstream out(config.outputFile);
+	for(size_t i = config.begin; i <= config.end; i += config.step)
+	{
+		out << i;
+		for(auto& algo : sortAlgorithms) {
+			RandomFill(seq.get(), i);
+			Sequence<int> * result = nullptr;
+			auto f = [&](){result = algo->Sort(seq.get());};
+			out << "\t" << MeasureExecTime(f);
+			delete result;
+		}
+		out << "\n";
+	}
+	out.close();
+	
+	if(config.needGraph)
+	{
+		vector<string> names;
+		for(auto& algo : sortAlgorithms) {
+			names.push_back(algo->Name());
+		}
+		openPlot(config.outputFile, names);
+	}
+	return 0;
+}
+
+void check(Config & config) {
+	auto sortAlgorithms = config.GetSorts<int>();
+	auto seq = config.sequenceToCheck.get();
+	for(auto& algo : sortAlgorithms) {
+		Sequence<int> * result = nullptr;
+		auto f = [&](){result = algo->Sort(seq);};
+		double elapsedTime = MeasureExecTime(f);
+		cout << algo->Name() << "\t";
+		cout << *seq << " -> " << *result << "\t";
+		cout << elapsedTime << "ms" << "\n";
+		delete result;
 	}
 }
 
-double MeasureExecTime(std::function<void()> f) {
+
+static bool srand_init = false;
+
+void RandomFill(Sequence<int>* s, size_t size)
+{
+	if(size == 0)
+	{
+		return;
+	}
+	
+	if(!srand_init)
+	{
+		srand(time(nullptr));
+		srand_init = true;
+	}
+	
+	s->InsertAt(rand() % size, size-1);
+	for(size_t i = 0; i < (size-1); ++i)
+	{
+		(*s)[i] = rand() % size;
+	}
+}
+
+double MeasureExecTime(std::function<void()> f)
+{
 	using std::chrono::high_resolution_clock;
     using std::chrono::duration;
 	
@@ -27,7 +90,20 @@ double MeasureExecTime(std::function<void()> f) {
 	return ms.count();
 }
 
-void openPlot(std::string filePath) {
-	auto plot_cmd = "set xlabel 'elements'; set ylabel 'time';plot '" + filePath;
-	execlp("gnuplot", "gnuplot", "-p", "-e", plot_cmd.c_str(), NULL);
+void openPlot(std::string filePath, std::vector<std::string> lineNames)
+{
+	stringstream cmd;
+	cmd << "set xlabel 'items';";
+	cmd << "set ylabel 'time, ms';";
+	cmd << "plot";
+	for(size_t i = 0; i < lineNames.size(); ++i)
+	{
+		cmd << " '" << filePath << "' using 1:" << std::to_string(i+2);
+		cmd << " title '" << lineNames[i] << "' with lines,";
+	}
+	cmd << ";";
+	cmd << "pause -1";
+	execlp("gnuplot", "gnuplot", "-e", cmd.str().c_str(), NULL);
 }
+
+

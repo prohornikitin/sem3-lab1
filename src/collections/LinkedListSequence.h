@@ -14,9 +14,6 @@ public:
 	LinkedListSequence(std::initializer_list<T> init) :
 		list(new LinkedList<T>(init)){}
 
-	LinkedListSequence(T* items, size_t count) :
-		list(new LinkedList<T>(items, count)) {}
-
 	LinkedListSequence(const LinkedListSequence<T> & sequence) :
 		list(new LinkedList<T>(*sequence.list)) {}
 
@@ -32,6 +29,7 @@ public:
 
 	virtual T Get(size_t index) const override
 	{
+		
 		return list->Get(index);
 	}
 

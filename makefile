@@ -8,7 +8,7 @@ BUILD_DIR := $(DIR)/build/$(BUILD)
 
 EXECUTABLE := $(BUILD_DIR)/exec
 
-CPP.FLAGS := -o $(EXECUTABLE) -pedantic -Wall -Wextra -I$(INCLUDE_DIR) -std=c++20
+CPP.FLAGS := -o $(EXECUTABLE) -pedantic -Wall -Wextra -I$(INCLUDE_DIR) -std=c++20 -lgtest
 ifeq ($(BUILD),release)
 	CPP.FLAGS += -Ofast
 else

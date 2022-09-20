@@ -8,7 +8,8 @@
 using namespace std;
 
 
-Args::Args() {
+Args::Args()
+{
 	
 }
 

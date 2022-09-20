@@ -3,16 +3,23 @@
 #include "ISort.h"
 
 template <class T>
-class ShellSort : public ISort<T> {
+class ShellSort : public ISort<T>
+{
 public:
 	using Comparator = typename ISort<T>::Comparator;
+	
+	
+	ShellSort()
+	{
+		gaps = {701, 301, 132, 57, 23, 10, 4, 1};
+	}
 	
 	ShellSort(const std::vector<size_t> & gaps)
 	{
 		this->gaps = gaps;
 	}
 	
-	virtual Sequence<T>* sort(
+	virtual Sequence<T>* Sort(
 		const Sequence<T>* seq, 
 		Comparator cmp = ISort<T>::cmpDefault
 	) override
@@ -33,6 +40,10 @@ public:
 			}
 		}
 		return a;
+	}
+	
+	virtual std::string Name() override {
+		return "ShellSort";
 	}
 
 private:

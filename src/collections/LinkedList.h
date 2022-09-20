@@ -57,7 +57,8 @@ public:
 	LinkedList<T>* GetSubList(size_t startIndex, size_t endIndex) const
 	{
 		LinkedList<T>* subList = new LinkedList<T>();
-		for(Node* i = GetNode(startIndex); i != GetNode(endIndex); i = i->next)
+		auto endNode = GetNode(endIndex);
+		for(Node* i = GetNode(startIndex); i != endNode->next; i = i->next)
 		{
 			subList->Append(i->data);
 		}
@@ -81,13 +82,17 @@ public:
 
 	void InsertAt(T item, size_t index)
 	{
-		while (index > length)
+		if (index > length)
 		{
-			Node* node = new Node(item, tail, nullptr);
-			tail->next = node;
-			tail = node;
+			while (index >= length)
+			{
+				Node* node = new Node(item, tail, nullptr);
+				tail->next = node;
+				tail = node;
+				length++;
+			}
+			return;
 		}
-		
 		Node* prev = nullptr;
 		Node* next = nullptr;
 		if(index == 0)
@@ -178,7 +183,10 @@ private:
 	public:
 		Node(T data, Node* prev = nullptr, Node* next = nullptr) :
 			data(data), prev(prev), next(next) {}
-
+		
+		Node(Node* prev = nullptr, Node* next = nullptr) :
+			prev(prev), next(next) {}
+		
 		T data;
 		Node* prev;
 		Node* next;

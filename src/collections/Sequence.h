@@ -81,14 +81,14 @@ public:
 	virtual void InsertAt(T item, size_t index) = 0;
 	virtual void RemoveAt(size_t index) = 0;
 
-	Sequence<T>* Concat(Sequence<T> * list) const
+	Sequence<T>* Concat(Sequence<T> * other) const
 	{
-		Sequence<T> * copy = emptyOfTheSameType();
-		for(size_t i=0; i<list->GetLength(); ++i)
+		Sequence<T> * result = copy();
+		for(size_t i=0; i<other->GetLength(); ++i)
 		{
-			copy->Append(list->Get(i));
+			result->Append(other->Get(i));
 		}
-		return copy;
+		return result;
 	}
 
 	Sequence<T>* Map(std::function<T(const T &)> f) const 

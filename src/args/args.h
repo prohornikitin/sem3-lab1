@@ -8,7 +8,8 @@
 #include <sstream>
 
 
-class Args {
+class Args
+{
 public:
 	Args();
 	Args(int argc, char * const argv[]);
@@ -21,9 +22,11 @@ public:
 	 * strToT() should throw std::invalid_argument on failure
 	 */
 	template <class T>
-	std::optional<T> ParseCustom(std::function<T(std::string)> strToT, std::string longName, char shortName = '\0') {
+	std::optional<T> ParseCustom(std::function<T(std::string)> strToT, std::string longName, char shortName = '\0')
+	{
 		auto strOpt = ParseString(longName, shortName);
-		if(!strOpt.has_value()) {
+		if(!strOpt.has_value())
+		{
 			return {};
 		}
 		return strToT(strOpt.value());
@@ -34,10 +37,12 @@ public:
 	 * strToT() should throw std::invalid_argument on failure
 	 */
 	template <class T>
-	std::vector<T> ParseCustoms(std::function<T(std::string)> strToT, std::string longName, char shortName = '\0') {
+	std::vector<T> ParseCustoms(std::function<T(std::string)> strToT, std::string longName, char shortName = '\0')
+	{
 		auto strings = ParseStrings(longName, shortName);
 		std::vector<T> values(strings.size());
-		for(size_t i = 0; i < strings.size(); i++) {
+		for(size_t i = 0; i < strings.size(); i++)
+		{
 			values[i] = strToT(strings[i]);
 		}
 		return values;
@@ -60,7 +65,6 @@ public:
 	template <class T>
 	std::vector<T> ParseCustomsWithStream(std::string longName, char shortName)
 	{
-		
 		auto f = [](std::string s)
 		{
 			std::stringstream ss;

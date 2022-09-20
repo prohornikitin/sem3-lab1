@@ -4,18 +4,26 @@
 
 
 template <class T>
-class QuickSort : public ISort<T> {
+class QuickSort : public ISort<T>
+{
 public:
 	using Comparator = typename ISort<T>::Comparator;
 	
-	virtual Sequence<T>* sort(
+	virtual Sequence<T>* Sort(
 		const Sequence<T>* seq,
 		Comparator cmp = ISort<T>::cmpDefault
 	) override
 	{
 		Sequence<T>* a = seq->copy();
+		if(a->GetLength() == 0) {
+			return a;
+		}
 		Recursive(a, 0, seq->GetLength()-1, cmp);
 		return a;
+	}
+	
+	virtual std::string Name() override {
+		return "QuickSort";
 	}
 
 private:

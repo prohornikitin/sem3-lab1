@@ -17,9 +17,6 @@ public:
 	ArraySequence(size_t count) :
 		array(new DynamicArray<T>(count)) {}
 
-	ArraySequence(T* items, size_t count) :
-		array(new DynamicArray(items, count)) {}
-
 	ArraySequence(const ArraySequence<T> & sequence) :
 		array(new DynamicArray<T>(*sequence.array)) {}
 
@@ -81,7 +78,7 @@ public:
 		}
 		array->Resize(array->GetSize()-1);
 	}
-
+	
 	virtual ~ArraySequence()
 	{
 		delete array;
@@ -93,3 +90,4 @@ private:
 	ArraySequence(DynamicArray<T> * array) :
 		array(array) {}
 };
+
